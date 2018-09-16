@@ -1,12 +1,15 @@
 package codes.andresen.boardgamecollection.facade;
 
 import codes.andresen.boardgamecollection.integration.GameCollectionService;
+import codes.andresen.boardgamecollection.model.BoardGame;
+import codes.andresen.boardgamecollection.model.BoardGameSearch;
 import codes.andresen.boardgamecollection.model.CollectionGameDetails;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -22,5 +25,10 @@ public class BoardGameCollectionController {
     @GetMapping("/collection")
     public List<CollectionGameDetails> getCollection(@RequestHeader(value = "userName") String userName) {
         return gameCollectionService.getGameCollection(userName);
+    }
+
+    @GetMapping("/search")
+    public BoardGame getGameSearch(@RequestHeader(value = "gameId") String gameId) throws IOException {
+        return gameCollectionService.getBoardGameSearch(gameId);
     }
 }
