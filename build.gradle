@@ -15,7 +15,6 @@ apply plugin: 'eclipse'
 apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
 
-
 group = 'codes.andresen'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = 10
@@ -23,7 +22,6 @@ sourceCompatibility = 10
 repositories {
     mavenCentral()
 }
-
 
 dependencies {
     implementation 'com.google.firebase:firebase-admin:6.4.0'

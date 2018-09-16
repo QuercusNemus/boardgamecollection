@@ -1,9 +1,8 @@
 package codes.andresen.boardgamecollection.integration;
 
-import com.google.api.core.ApiFuture;
+import codes.andresen.boardgamecollection.model.BoardGame;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.cloud.firestore.Firestore;
-import com.google.cloud.firestore.WriteResult;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
 import com.google.firebase.cloud.FirestoreClient;
@@ -14,10 +13,10 @@ import java.io.IOException;
 
 @Service
 class FireBaseIntegrationService {
-    private Firestore db = FirestoreClient.getFirestore();
+    private Firestore db;
 
     FireBaseIntegrationService() throws IOException {
-        FileInputStream serviceAccount = new FileInputStream("ServiceAccountKey.json");
+        FileInputStream serviceAccount = new FileInputStream("src/main/resources/ServiceAccountKey.json");
 
         FirebaseOptions options = new FirebaseOptions.Builder()
                 .setCredentials(GoogleCredentials.fromStream(serviceAccount))
@@ -25,13 +24,12 @@ class FireBaseIntegrationService {
                 .build();
 
         FirebaseApp.initializeApp(options);
+        db = FirestoreClient.getFirestore();
     }
 
-    void writToDB(String test) {
-        ApiFuture<WriteResult> future = db.collection("boardGames").document("boardGamesDetails")
-                .set(test);
-
-        System.out.println("Success: " + test + " wer written to DB!");
+    void writToDB(BoardGame boardGame) {
+        db.collection(boardGame.getGameId()).document(boardGame.getName()).set(boardGame);
+        System.out.println("Success: " + boardGame.getName() + " wer written to DB!");
     }
 
 }

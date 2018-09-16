@@ -34,8 +34,9 @@ public class GameCollectionService {
     public BoardGame getBoardGameSearch(String id) {
         RestTemplate restTemplate = new RestTemplate();
 
-        fireBaseIntegrationService.writToDB("Eric Test");
+        BoardGame boardGame = restTemplate.getForObject("https://bgg-json.azurewebsites.net/thing/" + id, BoardGame.class);
+        fireBaseIntegrationService.writToDB(boardGame);
 
-        return restTemplate.getForObject("https://bgg-json.azurewebsites.net/thing/" + id, BoardGame.class);
+        return boardGame;
     }
 }
