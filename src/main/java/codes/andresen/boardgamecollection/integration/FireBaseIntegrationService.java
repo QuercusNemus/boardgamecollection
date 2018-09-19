@@ -30,7 +30,7 @@ class FireBaseIntegrationService {
     }
 
     void writToDBSingleGame(CollectionGameDetails boardGame, String userName) {
-        db.collection(userName.toString()).document(boardGame.getName()).set(boardGame);
+        db.collection(userName).document(boardGame.getName()).set(boardGame);
         System.out.println("Success: " + boardGame.getName() + " wer written to DB!");
     }
 }
