@@ -26,16 +26,17 @@ public class GameCollectionService {
         for (CollectionGameDetails collection : collectionGameDetails) {
             if (collection.isOwned()) {
                 returnList.add(collection);
+                fireBaseIntegrationService.writToDBSingleGame(collection, userName);
             }
         }
         return returnList;
     }
 
-    public BoardGame getBoardGameSearch(String id) {
+    public BoardGame getBoardGameSearch(String id, String userName) {
         RestTemplate restTemplate = new RestTemplate();
 
         BoardGame boardGame = restTemplate.getForObject("https://bgg-json.azurewebsites.net/thing/" + id, BoardGame.class);
-        fireBaseIntegrationService.writToDB(boardGame);
+//        fireBaseIntegrationService.writToDBSingleGame(boardGame, userName);
 
         return boardGame;
     }

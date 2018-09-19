@@ -26,7 +26,9 @@ public class BoardGameCollectionController {
     }
 
     @GetMapping("/search")
-    public BoardGame getGameSearch(@RequestHeader(value = "gameId") String gameId) {
-        return gameCollectionService.getBoardGameSearch(gameId);
+    public BoardGame getGameSearch(
+            @RequestHeader(value = "gameId") String gameId,
+            @RequestHeader(value = "userName") String userName    ) {
+        return gameCollectionService.getBoardGameSearch(gameId, userName);
     }
 }

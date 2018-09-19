@@ -1,6 +1,7 @@
 package codes.andresen.boardgamecollection.integration;
 
 import codes.andresen.boardgamecollection.model.BoardGame;
+import codes.andresen.boardgamecollection.model.CollectionGameDetails;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.cloud.firestore.Firestore;
 import com.google.firebase.FirebaseApp;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.List;
 
 @Service
 class FireBaseIntegrationService {
@@ -27,9 +29,8 @@ class FireBaseIntegrationService {
         db = FirestoreClient.getFirestore();
     }
 
-    void writToDB(BoardGame boardGame) {
-        db.collection(boardGame.getGameId()).document(boardGame.getName()).set(boardGame);
+    void writToDBSingleGame(CollectionGameDetails boardGame, String userName) {
+        db.collection(userName.toString()).(boardGame.getName()).set(boardGame);
         System.out.println("Success: " + boardGame.getName() + " wer written to DB!");
     }
-
 }

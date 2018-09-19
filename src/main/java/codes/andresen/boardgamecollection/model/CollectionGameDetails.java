@@ -7,6 +7,7 @@ public class CollectionGameDetails {
     private String gameId;
     private String name;
     private String image;
+    private String thumbnail;
     private String minPlayers;
     private String maxPlayers;
     private String playingTime;
