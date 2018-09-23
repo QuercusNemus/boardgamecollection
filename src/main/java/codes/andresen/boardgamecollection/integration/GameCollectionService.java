@@ -7,17 +7,20 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 @Service
 public class GameCollectionService {
 
-    public GameCollectionService(FireBaseIntegrationService fireBaseIntegrationService) {
+    private FireBaseIntegrationService fireBaseIntegrationService;
+    private RestTemplate restTemplate;
+
+    public GameCollectionService(FireBaseIntegrationService fireBaseIntegrationService, RestTemplate restTemplate) {
         this.fireBaseIntegrationService = fireBaseIntegrationService;
+        this.restTemplate = restTemplate;
     }
 
-    private FireBaseIntegrationService fireBaseIntegrationService;
-
-    public List<CollectionGameDetails> getGameCollection(String userName) {
+    public List<CollectionGameDetails> addGameCollection(String userName) {
         RestTemplate restTemplate = new RestTemplate();
         CollectionGameDetails[] collectionGameDetails = restTemplate.getForObject("https://bgg-json.azurewebsites.net/collection/" + userName, CollectionGameDetails[].class);
 
@@ -32,12 +35,21 @@ public class GameCollectionService {
         return returnList;
     }
 
-    public BoardGame getBoardGameSearch(String id, String userName) {
-        RestTemplate restTemplate = new RestTemplate();
+    public CollectionGameDetails addSingleGame(String userName, String gameId) {
+        restTemplate = new RestTemplate();
+        CollectionGameDetails gameDetails = restTemplate.getForObject("https://bgg-json.azurewebsites.net/thing/" + gameId, CollectionGameDetails.class);
+        assert gameDetails != null;
+        gameDetails.setOwned(true);
+        fireBaseIntegrationService.writToDBSingleGame(gameDetails, userName);
+        return gameDetails;
+    }
 
-        BoardGame boardGame = restTemplate.getForObject("https://bgg-json.azurewebsites.net/thing/" + id, BoardGame.class);
-//        fireBaseIntegrationService.writToDBSingleGame(boardGame, userName);
+    public List<CollectionGameDetails> getGameCollection(String userName) throws ExecutionException, InterruptedException {
+        return fireBaseIntegrationService.getGameCollection(userName);
+    }
 
-        return boardGame;
+    public BoardGame getBoardGameSearch(String id) {
+        restTemplate = new RestTemplate();
+        return restTemplate.getForObject("https://bgg-json.azurewebsites.net/thing/" + id, BoardGame.class);
     }
 }
