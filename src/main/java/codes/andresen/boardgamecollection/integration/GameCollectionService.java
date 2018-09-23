@@ -3,7 +3,6 @@ package codes.andresen.boardgamecollection.integration;
 import codes.andresen.boardgamecollection.model.BoardGame;
 import codes.andresen.boardgamecollection.model.CollectionGameDetails;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,16 +12,15 @@ import java.util.concurrent.ExecutionException;
 public class GameCollectionService {
 
     private FireBaseIntegrationService fireBaseIntegrationService;
-    private RestTemplate restTemplate;
+    private BoardGameGeekIntegrationService boardGameGeekIntegrationService;
 
-    public GameCollectionService(FireBaseIntegrationService fireBaseIntegrationService, RestTemplate restTemplate) {
+    public GameCollectionService(FireBaseIntegrationService fireBaseIntegrationService, BoardGameGeekIntegrationService boardGameGeekIntegrationService) {
         this.fireBaseIntegrationService = fireBaseIntegrationService;
-        this.restTemplate = restTemplate;
+        this.boardGameGeekIntegrationService = boardGameGeekIntegrationService;
     }
 
     public List<CollectionGameDetails> addGameCollection(String userName) {
-        RestTemplate restTemplate = new RestTemplate();
-        CollectionGameDetails[] collectionGameDetails = restTemplate.getForObject("https://bgg-json.azurewebsites.net/collection/" + userName, CollectionGameDetails[].class);
+        CollectionGameDetails[] collectionGameDetails = boardGameGeekIntegrationService.getBoardGameCollection(userName);
 
         List<CollectionGameDetails> returnList = new ArrayList<>();
         assert collectionGameDetails != null;
@@ -36,20 +34,38 @@ public class GameCollectionService {
     }
 
     public CollectionGameDetails addSingleGame(String userName, String gameId) {
-        restTemplate = new RestTemplate();
-        CollectionGameDetails gameDetails = restTemplate.getForObject("https://bgg-json.azurewebsites.net/thing/" + gameId, CollectionGameDetails.class);
+        CollectionGameDetails gameDetails = boardGameGeekIntegrationService.getSingleCollectionDetails(gameId);
         assert gameDetails != null;
         gameDetails.setOwned(true);
         fireBaseIntegrationService.writToDBSingleGame(gameDetails, userName);
         return gameDetails;
     }
 
-    public List<CollectionGameDetails> getGameCollection(String userName) throws ExecutionException, InterruptedException {
-        return fireBaseIntegrationService.getGameCollection(userName);
+    public List<BoardGame> getGameCollection(String userName) throws ExecutionException, InterruptedException {
+        List<CollectionGameDetails> collectionGameDetailsList = fireBaseIntegrationService.getGameCollection(userName);
+        List<BoardGame> boardGameList = new ArrayList<>();
+
+        for (CollectionGameDetails collectionGameDetails : collectionGameDetailsList) {
+            BoardGame boardGame = boardGameGeekIntegrationService.getBoardGameSearch(collectionGameDetails.getGameId());
+            boardGameList.add(boardGame);
+        }
+
+        return boardGameList;
     }
 
-    public BoardGame getBoardGameSearch(String id) {
-        restTemplate = new RestTemplate();
-        return restTemplate.getForObject("https://bgg-json.azurewebsites.net/thing/" + id, BoardGame.class);
+    public BoardGame getSingleGame(String gameId) {
+        BoardGame boardGame = boardGameGeekIntegrationService.getBoardGameSearch(gameId);
+        System.out.println(boardGame);
+        return boardGame;
+    }
+
+    public String deleteSingleGame(String userName, String gameName) {
+        fireBaseIntegrationService.deleteSingleGame(userName, gameName);
+        return "Success!";
+    }
+
+    public String deleteCollection(String userName) {
+        fireBaseIntegrationService.deleteCollection(userName, 100);
+        return "Succes!";
     }
 }

@@ -1,5 +1,6 @@
 package codes.andresen.boardgamecollection.integration;
 
+import codes.andresen.boardgamecollection.model.BoardGame;
 import codes.andresen.boardgamecollection.model.CollectionGameDetails;
 import com.google.api.core.ApiFuture;
 import com.google.auth.oauth2.GoogleCredentials;
@@ -34,6 +35,31 @@ class FireBaseIntegrationService {
     void writToDBSingleGame(CollectionGameDetails boardGame, String userName) {
         db.collection(userName).document(boardGame.getName()).set(boardGame);
         System.out.println("Success: " + boardGame.getName() + " wer added to: " + userName + " collection.");
+    }
+
+    void deleteSingleGame(String userName, String gameName) {
+        ApiFuture<WriteResult> writeResultApiFuture = db.collection(userName).document(gameName).delete();
+    }
+
+    void deleteCollection(String userName, int batchSize) {
+        CollectionReference collection = db.collection(userName);
+        try {
+            // retrieve a small batch of documents to avoid out-of-memory errors
+            ApiFuture<QuerySnapshot> future = collection.limit(batchSize).get();
+            int deleted = 0;
+            // future.get() blocks on document retrieval
+            List<QueryDocumentSnapshot> documents = future.get().getDocuments();
+            for (QueryDocumentSnapshot document : documents) {
+                document.getReference().delete();
+                ++deleted;
+            }
+            if (deleted >= batchSize) {
+                // retrieve and delete another batch
+                deleteCollection(userName, batchSize);
+            }
+        } catch (Exception e) {
+            System.err.println("Error deleting collection : " + e.getMessage());
+        }
     }
 
     List<CollectionGameDetails> getGameCollection(String userName) throws ExecutionException, InterruptedException {

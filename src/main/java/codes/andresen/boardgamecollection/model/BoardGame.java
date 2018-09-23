@@ -12,7 +12,7 @@ public class BoardGame {
     private String minPlayers;
     private String maxPlayers;
     private String playingTime;
-    private boolean isExpansion;
+    private String isExpansion;
     private String yearPublished;
     private String bggRating;
     private String averageRating;

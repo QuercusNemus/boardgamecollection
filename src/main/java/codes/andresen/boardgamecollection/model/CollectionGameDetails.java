@@ -27,4 +27,5 @@ public class CollectionGameDetails {
     private boolean wantToBuy;
     private boolean wishList;
     private String userComment;
+    private String description;
 }
