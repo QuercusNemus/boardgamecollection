@@ -1,6 +1,6 @@
 package codes.andresen.boardgamecollection.integration;
 
-import codes.andresen.boardgamecollection.model.BoardGame;
+import codes.andresen.boardgamecollection.model.Game.BoardGame;
 import com.google.api.core.ApiFuture;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.cloud.firestore.*;
@@ -11,7 +11,9 @@ import org.springframework.stereotype.Service;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 @Service
 class FireBaseIntegrationService {
@@ -29,9 +31,9 @@ class FireBaseIntegrationService {
         db = FirestoreClient.getFirestore();
     }
 
-    void writToDBSingleGame(BoardGame boardGame, String userName) {
+    String addSingleGameToCollection(BoardGame boardGame, String userName) {
         db.collection(userName).document(boardGame.getName()).set(boardGame);
-        System.out.println("Success: " + boardGame.getName() + " wer added to: " + userName + " collection.");
+        return boardGame.getName() + " wer added to: " + userName + " collection.\n";
     }
 
     void deleteSingleGame(String userName, String gameName) {
@@ -59,18 +61,18 @@ class FireBaseIntegrationService {
         }
     }
 
-//    List<CollectionGameDetails> getGameCollection(String userName) throws ExecutionException, InterruptedException {
-//        CollectionReference documentReference = db.collection(userName);
-//        ApiFuture<QuerySnapshot> future = documentReference.get();
-//        List<QueryDocumentSnapshot> documentSnapshots = future.get().getDocuments();
-//
-//        List<CollectionGameDetails> returnList = new ArrayList<>();
-//
-//        for (QueryDocumentSnapshot doc : documentSnapshots) {
-//            CollectionGameDetails game = doc.toObject(CollectionGameDetails.class);
-//            returnList.add(game);
-//        }
-//
-//        return returnList;
-//    }
+    List<BoardGame> getGameCollection(String userName) throws ExecutionException, InterruptedException {
+        CollectionReference documentReference = db.collection(userName);
+        ApiFuture<QuerySnapshot> future = documentReference.get();
+        List<QueryDocumentSnapshot> documentSnapshots = future.get().getDocuments();
+
+        List<BoardGame> returnList = new ArrayList<>();
+
+        for (QueryDocumentSnapshot doc : documentSnapshots) {
+            BoardGame game = doc.toObject(BoardGame.class);
+            returnList.add(game);
+        }
+
+        return returnList;
+    }
 }

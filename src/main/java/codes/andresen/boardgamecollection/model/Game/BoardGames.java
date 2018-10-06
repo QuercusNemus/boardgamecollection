@@ -1,4 +1,4 @@
-package codes.andresen.boardgamecollection.model;
+package codes.andresen.boardgamecollection.model.Game;
 
 import lombok.Data;
 
