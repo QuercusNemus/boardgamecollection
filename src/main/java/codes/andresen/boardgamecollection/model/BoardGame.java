@@ -2,19 +2,30 @@ package codes.andresen.boardgamecollection.model;
 
 import lombok.Data;
 
+import javax.xml.bind.annotation.*;
+
 @Data
+@XmlRootElement(name = "boardgame")
+@XmlAccessorType(XmlAccessType.FIELD)
 public class BoardGame {
-    private String gameId;
+    @XmlAttribute(name = "objectid")
+    private int gameId;
+    @XmlElement(name = "yearpublished")
+    private int yearPublished;
+    @XmlElement(name = "name")
     private String name;
+    @XmlElement(name = "minplayers")
+    private int minPlayers;
+    @XmlElement(name = "maxplayers")
+    private int maxPlayers;
+    @XmlElement(name = "playingtime")
+    private int playingTime;
+    @XmlElement(name = "age")
+    private int age;
+    @XmlElement(name = "description")
     private String description;
-    private String image;
+    @XmlElement(name = "thumbnail")
     private String thumbnail;
-    private String minPlayers;
-    private String maxPlayers;
-    private String playingTime;
-    private String isExpansion;
-    private String yearPublished;
-    private String bggRating;
-    private String averageRating;
-    private String rank;
+    @XmlElement(name = "image")
+    private String image;
 }
