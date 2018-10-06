@@ -13,14 +13,18 @@ public class GameCollectionService {
 
     private FireBaseIntegrationService fireBaseIntegrationService;
     private BoardGameGeekIntegrationService boardGameGeekIntegrationService;
+    private BoardGameGeeksIntegrationXMLService boardGameGeeksIntegrationXMLService;
 
-    public GameCollectionService(FireBaseIntegrationService fireBaseIntegrationService, BoardGameGeekIntegrationService boardGameGeekIntegrationService) {
+    public GameCollectionService(FireBaseIntegrationService fireBaseIntegrationService, BoardGameGeekIntegrationService boardGameGeekIntegrationService, BoardGameGeeksIntegrationXMLService boardGameGeeksIntegrationXMLService) {
         this.fireBaseIntegrationService = fireBaseIntegrationService;
         this.boardGameGeekIntegrationService = boardGameGeekIntegrationService;
+        this.boardGameGeeksIntegrationXMLService = boardGameGeeksIntegrationXMLService;
     }
 
     public List<CollectionGameDetails> addGameCollection(String userName) {
         CollectionGameDetails[] collectionGameDetails = boardGameGeekIntegrationService.getBoardGameCollection(userName);
+
+        boardGameGeeksIntegrationXMLService.testXML();
 
         List<CollectionGameDetails> returnList = new ArrayList<>();
         assert collectionGameDetails != null;
@@ -49,7 +53,7 @@ public class GameCollectionService {
             BoardGame boardGame = boardGameGeekIntegrationService.getBoardGameSearch(collectionGameDetails.getGameId());
             boardGameList.add(boardGame);
         }
-
+        boardGameGeeksIntegrationXMLService.testXML();
         return boardGameList;
     }
 

@@ -1,0 +1,29 @@
+<boardgames termsofuse="https://boardgamegeek.com/xmlapi/termsofuse">
+    <boardgame objectid="2536">
+        <yearpublished>2001</yearpublished>
+        <minplayers>3</minplayers>
+        <maxplayers>6</maxplayers>
+        <playingtime>30</playingtime>
+        <minplaytime>30</minplaytime>
+        <maxplaytime>30</maxplaytime>
+        <age>12</age>
+        <name primary="true" sortindex="1">Vabanque</name>
+        <description>...</description>
+        <thumbnail>...</thumbnail>
+        <image>...</image>
+        <boardgamehonor objectid="19620">...</boardgamehonor>
+        <boardgamemechanic objectid="2014">Betting/Wagering</boardgamemechanic>
+        <boardgamecategory objectid="1023">Bluffing</boardgamecategory>
+        <boardgamedesigner objectid="138">Leo Colovini</boardgamedesigner>
+        <boardgamedesigner objectid="125">Bruno Faidutti</boardgamedesigner>
+        <boardgameversion objectid="375716">Japanese edition</boardgameversion>
+        <boardgameartist objectid="59">Marcel-André Casasola Merkle</boardgameartist>
+        <boardgamepublisher objectid="9881">New Games Order, LLC</boardgamepublisher>
+        <boardgameversion objectid="53191">Winning Moves edition</boardgameversion>
+        <boardgamepublisher objectid="26208">Winning Moves Germany</boardgamepublisher>
+        <boardgamepodcastepisode objectid="174182">...</boardgamepodcastepisode>
+        <poll name="suggested_numplayers" title="User Suggested Number of Players" totalvotes="3">...</poll>
+        <poll name="language_dependence" title="Language Dependence" totalvotes="3">...</poll>
+        <poll name="suggested_playerage" title="User Suggested Player Age" totalvotes="2">...</poll>
+    </boardgame>
+</boardgames>
