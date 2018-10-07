@@ -3,7 +3,6 @@ package codes.andresen.boardgamecollection.facade;
 import codes.andresen.boardgamecollection.integration.GameCollectionService;
 import codes.andresen.boardgamecollection.model.Game.BoardGame;
 import codes.andresen.boardgamecollection.model.Game.BoardGames;
-import codes.andresen.boardgamecollection.model.collection.Items;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -38,11 +37,16 @@ public class BoardGameCollectionController {
         return gameCollectionService.getGameCollection(userName);
     }
 
-    @GetMapping("/getXMLGame")
-    public String getBoardGame(
-            @RequestHeader(value = "userName") String userName,
+    @GetMapping("/search/game")
+    public BoardGames getSearchGame(
+            @RequestHeader(value = "searchString") String searchString) {
+        return gameCollectionService.searchBoardGames(searchString);
+    }
+
+    @GetMapping("/get/game")
+    public BoardGames getGame(
             @RequestHeader(value = "gameId") int gameId) {
-        return gameCollectionService.getBoardGame(gameId, userName);
+        return gameCollectionService.getGame(gameId);
     }
 
     @DeleteMapping(value = "/collection/delete/game/{gameName}")

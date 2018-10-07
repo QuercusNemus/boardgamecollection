@@ -21,4 +21,8 @@ public class BoardGameGeeksIntegrationService {
     Items getCollection(String userName) {
         return restTemplate.getForObject("https://www.boardgamegeek.com/xmlapi/collection/" + userName, Items.class);
     }
+
+    BoardGames searchForGame(String searchString) {
+        return restTemplate.getForObject("https://www.boardgamegeek.com/xmlapi/search?search=" + searchString, BoardGames.class);
+    }
 }

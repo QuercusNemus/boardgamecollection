@@ -42,6 +42,14 @@ public class GameCollectionService {
         return fireBaseIntegrationService.getGameCollection(userName);
     }
 
+    public BoardGames searchBoardGames(String searchString) {
+        return boardGameGeeksIntegrationService.searchForGame(searchString);
+    }
+
+    public BoardGames getGame(int gameId) {
+        return boardGameGeeksIntegrationService.getBoardGames(gameId);
+    }
+
     public String deleteSingleGame(String userName, String gameName) {
         fireBaseIntegrationService.deleteSingleGame(userName, gameName);
         return "Success!";
