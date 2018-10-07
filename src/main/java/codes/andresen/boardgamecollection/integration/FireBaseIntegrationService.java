@@ -37,7 +37,7 @@ class FireBaseIntegrationService {
     }
 
     void deleteSingleGame(String userName, String gameName) {
-        ApiFuture<WriteResult> writeResultApiFuture = db.collection(userName).document(gameName).delete();
+        db.collection(userName).document(gameName).delete();
     }
 
     void deleteCollection(String userName, int batchSize) {
