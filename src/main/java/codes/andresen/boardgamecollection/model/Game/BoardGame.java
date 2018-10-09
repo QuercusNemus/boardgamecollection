@@ -3,6 +3,7 @@ package codes.andresen.boardgamecollection.model.Game;
 import lombok.Data;
 
 import javax.xml.bind.annotation.*;
+import java.util.List;
 
 @Data
 @XmlRootElement(name = "boardgame")
@@ -13,7 +14,7 @@ public class BoardGame {
     @XmlElement(name = "yearpublished")
     private int yearPublished;
     @XmlElement(name = "name")
-    private String name;
+    private List<Name> nameList;
     @XmlElement(name = "minplayers")
     private int minPlayers;
     @XmlElement(name = "maxplayers")
@@ -28,4 +29,13 @@ public class BoardGame {
     private String thumbnail;
     @XmlElement(name = "image")
     private String image;
+
+    public String getPrimaryGameName() {
+        for (Name name : nameList) {
+            if (name.isPrimary()) {
+                return name.getName();
+            }
+        }
+        return nameList.get(0).getName();
+    }
 }

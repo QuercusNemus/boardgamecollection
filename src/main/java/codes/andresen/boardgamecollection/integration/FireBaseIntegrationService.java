@@ -32,8 +32,8 @@ class FireBaseIntegrationService {
     }
 
     String addSingleGameToCollection(BoardGame boardGame, String userName) {
-        db.collection(userName).document(boardGame.getName()).set(boardGame);
-        return boardGame.getName() + " wer added to: " + userName + " collection.\n";
+        db.collection(userName).document(boardGame.getPrimaryGameName()).set(boardGame);
+        return boardGame.getPrimaryGameName() + " wer added to: " + userName + " collection.\n";
     }
 
     void deleteSingleGame(String userName, String gameName) {
