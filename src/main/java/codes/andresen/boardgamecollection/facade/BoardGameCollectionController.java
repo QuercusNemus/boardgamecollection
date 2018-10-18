@@ -31,6 +31,7 @@ public class BoardGameCollectionController {
         return gameCollectionService.getBoardGame(gameId, userName);
     }
 
+    @CrossOrigin()
     @GetMapping("/collection/read")
     public List<BoardGame> getCollection(
             @RequestHeader(value = "userName") String userName) throws ExecutionException, InterruptedException {
